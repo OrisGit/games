@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,7 +24,7 @@ public class Genre implements Updatable<Genre>{
 
     @JsonIgnore
     @ManyToMany
-    private List<Game> games;
+    private Set<Game> games;
 
     public void update(Genre genre) {
         this.name = genre.name;

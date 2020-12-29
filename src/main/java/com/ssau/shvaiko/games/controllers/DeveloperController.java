@@ -14,6 +14,6 @@ import static com.ssau.shvaiko.games.config.AppConstants.API_V1;
 public class DeveloperController extends DefaultController<Developer> {
 
     protected DeveloperController(DeveloperRepository repository) {
-        super(repository);
+        super(repository, Developer.class);
     }
 }

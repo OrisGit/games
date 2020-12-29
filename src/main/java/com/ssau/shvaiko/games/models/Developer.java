@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,7 +26,7 @@ public class Developer implements Updatable<Developer>{
 
     @JsonIgnore
     @OneToMany(mappedBy = "developer")
-    private List<Game> games;
+    private Set<Game> games;
 
     public void update(Developer developer) {
         this.name = developer.name;

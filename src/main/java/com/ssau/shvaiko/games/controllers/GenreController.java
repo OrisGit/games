@@ -18,7 +18,7 @@ import static com.ssau.shvaiko.games.config.AppConstants.API_V1;
 @RestController
 public class GenreController extends DefaultController<Genre> {
     protected GenreController(JpaRepository<Genre, UUID> repository) {
-        super(repository);
+        super(repository, Genre.class);
     }
 }
 

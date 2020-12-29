@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,7 +25,7 @@ public class Platform implements Updatable<Platform>{
 
     @JsonIgnore
     @ManyToMany
-    private List<Game> games;
+    private Set<Game> games;
 
     public void update(Platform platform) {
         this.name = platform.name;

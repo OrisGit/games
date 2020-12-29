@@ -15,6 +15,6 @@ import static com.ssau.shvaiko.games.config.AppConstants.API_V1;
 @RestController
 public class PlatformController extends DefaultController<Platform> {
     protected PlatformController(JpaRepository<Platform, UUID> repository) {
-        super(repository);
+        super(repository, Platform.class);
     }
 }

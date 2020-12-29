@@ -1,18 +1,21 @@
 package com.ssau.shvaiko.games.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import com.ssau.shvaiko.games.dto.GameDTO;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "game")
 @Data
 @NoArgsConstructor
-public class Game implements Updatable<Game>{
+public class Game {
 
     @Id
     @GeneratedValue
@@ -29,22 +32,31 @@ public class Game implements Updatable<Game>{
 
     @JsonIgnore
     @ManyToMany(mappedBy = "games")
-    private List<Genre> genres;
+    private Set<Genre> genres;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "games")
-    private List<Platform> platforms;
+    private Set<Platform> platforms;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "games")
-    private List<Publisher> publishers;
+    private Set<Publisher> publishers;
 
-    public void update(Game game) {
-        this.name = game.name;
-        this.release = game.release;
-        this.pegiRate = game.pegiRate;
-        this.description = game.description;
-        this.criticsScore = game.criticsScore;
-        this.personalScore = game.personalScore;
+    public Game(GameDTO game) {
+        this.name = game.getName();
+        this.release = game.getRelease();
+        this.pegiRate = game.getPegiRate();
+        this.description = game.getDescription();
+        this.criticsScore = game.getCriticsScore();
+        this.personalScore = game.getPersonalScore();
+    }
+
+    public void update(GameDTO game) {
+        this.name = game.getName();
+        this.release = game.getRelease();
+        this.pegiRate = game.getPegiRate();
+        this.description = game.getDescription();
+        this.criticsScore = game.getCriticsScore();
+        this.personalScore = game.getPersonalScore();
     }
 }

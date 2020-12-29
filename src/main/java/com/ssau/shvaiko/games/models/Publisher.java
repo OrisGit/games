@@ -9,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -28,7 +29,7 @@ public class Publisher implements Updatable<Publisher>{
 
     @JsonIgnore
     @ManyToMany
-    private List<Game> games;
+    private Set<Game> games;
 
     public void update(Publisher publisher) {
         this.name = publisher.name;

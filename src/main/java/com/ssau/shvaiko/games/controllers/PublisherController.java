@@ -16,6 +16,6 @@ import static com.ssau.shvaiko.games.config.AppConstants.API_V1;
 public class PublisherController extends DefaultController<Publisher> {
 
     protected PublisherController(JpaRepository<Publisher, UUID> repository) {
-        super(repository);
+        super(repository, Publisher.class);
     }
 }
