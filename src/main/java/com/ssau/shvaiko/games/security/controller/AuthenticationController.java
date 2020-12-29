@@ -5,6 +5,7 @@ import com.ssau.shvaiko.games.security.entity.User;
 import com.ssau.shvaiko.games.security.exception.UserExistsException;
 import com.ssau.shvaiko.games.security.service.SessionService;
 import com.ssau.shvaiko.games.security.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -31,6 +32,7 @@ public class AuthenticationController {
         return new UserDTO(currentUser);
     }
 
+    @SecurityRequirements
     @PostMapping(REGISTRATION_PATH)
     public ResponseEntity<UserDTO> register(@RequestBody User user) throws UserExistsException {
         User newUser = userService.saveUser(user);
