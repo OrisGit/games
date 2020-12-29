@@ -1,0 +1,18 @@
+server:
+  port: 8090
+
+spring:
+  profiles:
+    active: prod,default-user
+  datasource:
+    url: jdbc:postgresql://ec2-34-204-121-199.compute-1.amazonaws.com:5432/d4hvumuukilvkm
+    username: hixalcgomfbwzq
+    password: 18325ba88ee9647ab1ecdda888063a04000e397f3fe28de247184501ed440177
+    platform: POSTGRESQL
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: create
