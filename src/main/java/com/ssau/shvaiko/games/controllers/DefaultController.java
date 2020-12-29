@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@CrossOrigin
-@RestController
 public abstract class DefaultController<T extends Updatable<T>> {
 
     private JpaRepository<T, UUID> repository;
