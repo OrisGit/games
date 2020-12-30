@@ -24,7 +24,7 @@ public class Platform implements Updatable<Platform>{
     private String family;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(mappedBy = "platforms")
     private Set<Game> games;
 
     public void update(Platform platform) {

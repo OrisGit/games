@@ -35,60 +35,75 @@ public class GameController {
     private DeveloperRepository developerRepository;
 
     @GetMapping
-    public Set<GameDTO> getAll(@RequestParam(required = false) Map<String, String> filter) {
-        return filter(filter, gameRepository.findAll(), Game.class).stream().map(GameDTO::new).collect(Collectors.toSet());
+    public Set<Game> getAll(@RequestParam(required = false) Map<String, String> filter) {
+        return filter(filter, gameRepository.findAll(), Game.class);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GameDTO> get(@PathVariable(name = "id") UUID id) {
+    public ResponseEntity<Game> get(@PathVariable(name = "id") UUID id) {
         Optional<Game> optional = gameRepository.findById(id);
-        return optional.map(game -> ResponseEntity.ok(new GameDTO(game)))
+        return optional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity add(@RequestBody GameDTO dto) {
-        List<Platform> platforms = platformRepository.findAllById(dto.getPlatforms());
-        List<Publisher> publishers = publisherRepository.findAllById(dto.getPublishers());
-        List<Genre> genres = genreRepository.findAllById(dto.getGenres());
-        Optional<Developer> developer = developerRepository.findById(dto.getDeveloper());
+    public ResponseEntity add(@RequestBody Game game) {
+        List<Platform> platforms = Collections.emptyList();
+        List<Publisher> publishers = Collections.emptyList();
+        List<Genre> genres = Collections.emptyList();
+        if(game.getPlatforms() != null) {
+            platforms = platformRepository.findAllById(game.getPlatforms().stream().map(Platform::getId).collect(Collectors.toList()));
 
-        Game game = new Game(dto);
+        }
+        if(game.getGenres() != null) {
+            genres = genreRepository.findAllById(game.getGenres().stream().map(Genre::getId).collect(Collectors.toList()));
+        }
+
+        if(game.getPublishers() != null) {
+            publishers = publisherRepository.findAllById(game.getPublishers().stream().map(Publisher::getId).collect(Collectors.toList()));
+        }
+        Optional<Developer> developer = game.getDeveloper() != null ? developerRepository.findById(game.getDeveloper().getId()) : Optional.empty();
+
         game.setPlatforms(new HashSet<>(platforms));
         game.setPublishers(new HashSet<>(publishers));
         game.setGenres(new HashSet<>(genres));
+        developer.ifPresent(game::setDeveloper);
 
         gameRepository.save(game);
-
-        if(developer.isPresent()) {
-            developer.get().getGames().add(game);
-            developerRepository.save(developer.get());
-        }
 
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@RequestBody GameDTO dto, @PathVariable UUID id) {
+    public ResponseEntity update(@RequestBody Game dto, @PathVariable UUID id) {
         Optional<Game> wrapper = gameRepository.findById(id);
         if(wrapper.isPresent()) {
-            List<Platform> platforms = platformRepository.findAllById(dto.getPlatforms());
-            List<Publisher> publishers = publisherRepository.findAllById(dto.getPublishers());
-            List<Genre> genres = genreRepository.findAllById(dto.getGenres());
-            Optional<Developer> developer = developerRepository.findById(dto.getDeveloper());
+            List<Platform> platforms = Collections.emptyList();
+            List<Publisher> publishers = Collections.emptyList();
+            List<Genre> genres = Collections.emptyList();
+            if(dto.getPlatforms() != null) {
+                platforms = platformRepository.findAllById(dto.getPlatforms().stream().map(Platform::getId).collect(Collectors.toList()));
+
+            }
+            if(dto.getGenres() != null) {
+                genres = genreRepository.findAllById(dto.getGenres().stream().map(Genre::getId).collect(Collectors.toList()));
+            }
+
+            if(dto.getPublishers() != null) {
+               publishers = publisherRepository.findAllById(dto.getPublishers().stream().map(Publisher::getId).collect(Collectors.toList()));
+            }
+
+            Optional<Developer> developer = dto.getDeveloper() != null ? developerRepository.findById(dto.getDeveloper().getId()) : Optional.empty();
 
             Game game = wrapper.get();
             game.update(dto);
             game.setPlatforms(new HashSet<>(platforms));
             game.setPublishers(new HashSet<>(publishers));
             game.setGenres(new HashSet<>(genres));
+            developer.ifPresent(game::setDeveloper);
 
             gameRepository.save(game);
 
-            if(developer.isPresent()) {
-                developer.get().getGames().add(game);
-                developerRepository.save(developer.get());
-            }
 
             return ResponseEntity.ok().build();
         }

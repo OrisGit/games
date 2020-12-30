@@ -15,7 +15,7 @@ spring:
     database: postgresql
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
 springdoc:
   api-docs:
     path: /api-docs

@@ -28,7 +28,7 @@ public class Publisher implements Updatable<Publisher>{
     private Date founded;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(mappedBy = "publishers")
     private Set<Game> games;
 
     public void update(Publisher publisher) {

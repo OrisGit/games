@@ -20,10 +20,11 @@ public class Genre implements Updatable<Genre>{
     @GeneratedValue
     private UUID id;
     private String name;
+    @Column(columnDefinition="TEXT")
     private String description;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(mappedBy = "genres")
     private Set<Game> games;
 
     public void update(Genre genre) {
